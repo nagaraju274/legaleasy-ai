@@ -3,8 +3,6 @@
 import { Shield, BrainCircuit, FileText, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/use-auth';
-import { useEffect } from 'react';
 import Link from 'next/link';
 
 function Logo() {
@@ -23,13 +21,6 @@ function Logo() {
 
 export default function Home() {
   const router = useRouter();
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.replace('/dashboard');
-    }
-  }, [user, loading, router]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

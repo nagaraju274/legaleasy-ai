@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sidebar';
 import { MainSidebar } from '@/components/main-sidebar';
 import { Header } from '@/components/header';
-import { FileText } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function DashboardLayout({
   children,
@@ -30,7 +30,7 @@ export default function DashboardLayout({
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
-          <FileText className="h-12 w-12 animate-pulse text-primary" />
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p className="text-muted-foreground">Loading Your Dashboard...</p>
         </div>
       </div>

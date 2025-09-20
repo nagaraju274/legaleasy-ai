@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { FileText } from 'lucide-react';
+import { FileText, Loader2 } from 'lucide-react';
 import { GoogleIcon } from '@/components/icons/google-icon';
 
 export default function LoginPage() {
@@ -23,6 +23,16 @@ export default function LoginPage() {
       router.replace('/dashboard');
     }
   }, [user, loading, router]);
+
+  if (loading) {
+     return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-muted/50 p-4">
@@ -39,8 +49,8 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={login} className="w-full" size="lg">
-            <GoogleIcon className="mr-2" />
+          <Button onClick={login} className="w-full" size="lg" disabled={loading}>
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon className="mr-2" />}
             Sign in with Google
           </Button>
           <p className="mt-4 text-center text-xs text-muted-foreground">

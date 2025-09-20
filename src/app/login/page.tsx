@@ -14,6 +14,24 @@ import {
 import { FileText, Loader2 } from 'lucide-react';
 import { GoogleIcon } from '@/components/icons/google-icon';
 import Link from 'next/link';
+import { Footer } from '@/components/footer';
+import { Shield } from 'lucide-react';
+
+
+function Logo() {
+  return (
+    <Link href="/" className="flex items-center gap-2">
+      <Shield className="h-8 w-8 text-primary" />
+      <div>
+        <h1 className="text-xl font-bold">LegalEase AI</h1>
+        <p className="text-xs text-muted-foreground">
+          Legal Document Intelligence
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 
 export default function LoginPage() {
   const { login, user, loading } = useAuth();
@@ -36,8 +54,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex flex-1 w-full items-center justify-center bg-muted/50 p-4">
+    <div className="flex min-h-screen flex-col bg-background">
+       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center">
+          <Logo />
+          <div className="flex flex-1 items-center justify-end space-x-4">
+          </div>
+        </div>
+      </header>
+      <main className="flex flex-1 w-full items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -60,28 +85,8 @@ export default function LoginPage() {
             </p>
           </CardContent>
         </Card>
-      </div>
-       <footer className="border-t bg-background">
-        <div className="container flex h-16 items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} LegalEase AI. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-              Terms of Service
-            </Link>
-          </div>
-        </div>
-      </footer>
+      </main>
+      <Footer/>
     </div>
   );
 }

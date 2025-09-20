@@ -4,6 +4,8 @@ import { Shield, BrainCircuit, FileText, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Footer } from '@/components/footer';
+
 
 function Logo() {
   return (
@@ -49,7 +51,7 @@ export default function Home() {
               risk analysis, and plain-English explanations. No legal expertise
               required.
             </p>
-            <div className="mt-8 flex justify-center gap-4">
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Button size="lg" onClick={() => router.push('/login')}>
                 Get Started Free
               </Button>
@@ -143,28 +145,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      <footer className="border-t">
-        <div className="container flex h-16 items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} LegalEase AI. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-              Terms of Service
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }

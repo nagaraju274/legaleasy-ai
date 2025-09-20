@@ -39,20 +39,17 @@ export function DocumentUpload({ onUploadSuccess }: DocumentUploadProps) {
     
     setIsParsing(true);
     try {
-      if (file.type === 'text/plain') {
-        const text = await file.text();
-        onUploadSuccess(text, file.name);
-      } else {
-        // For this demo, we will simulate reading other file types.
-        const simulatedText = `This is a simulated content for the file: ${file.name}. In a real application, you would use a library to parse this file type.`;
-        onUploadSuccess(simulatedText, file.name);
-      }
+      // For this demo, we will simulate reading all file types as text.
+      // In a real app, you would use libraries like pdf-parse or mammoth.
+      const text = await file.text();
+      onUploadSuccess(text, file.name);
+
     } catch (error) {
       console.error('Error parsing file:', error);
       toast({
         variant: 'destructive',
         title: 'Upload Failed',
-        description: 'There was an error processing your file.',
+        description: 'There was an error processing your file. Only text-based files are fully supported in this demo.',
       });
     } finally {
       setIsParsing(false);

@@ -199,7 +199,7 @@ export function ActiveLease() {
                 </ul>
               </div>
 
-              {highlights?.renewalNoticeDays && (
+              {highlights?.renewalNoticeDays && highlights.renewalNoticeDays > 0 && (
                 <Card className="p-4 bg-muted max-w-xs">
                   <CardContent className="p-0">
                     <p className="font-bold text-lg">Renewal Notice</p>

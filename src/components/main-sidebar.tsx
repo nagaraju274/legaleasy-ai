@@ -63,12 +63,14 @@ export function MainSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
-              href="/dashboard/upload"
+              asChild
               isActive={pathname.startsWith('/dashboard/upload')}
               tooltip="Upload"
             >
-              <UploadCloud />
-              <span className="truncate">Upload</span>
+              <Link href="/dashboard/upload">
+                <UploadCloud />
+                <span className="truncate">Upload</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

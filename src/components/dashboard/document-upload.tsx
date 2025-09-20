@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, UploadCloud } from 'lucide-react';
-import { SAMPLE_LEGAL_DOCUMENT } from '@/lib/placeholder-data';
+import { UploadCloud } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useRef, ChangeEvent } from 'react';
 
@@ -22,29 +21,31 @@ export function DocumentUpload({ onUploadSuccess }: DocumentUploadProps) {
   const [isParsing, setIsParsing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleUseSample = () => {
-    onUploadSuccess(SAMPLE_LEGAL_DOCUMENT, 'sample-agreement.txt');
-  };
-
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    if (file.type.startsWith('audio/') || file.type.startsWith('video/')) {
+      toast({
+        variant: 'destructive',
+        title: 'Unsupported File Type',
+        description: 'Audio and video files are not supported.',
+      });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+    
     setIsParsing(true);
     try {
-      // For this demo, we'll just read the text content.
-      // In a real app you might use a library like pdf-parse or mammoth.
       if (file.type === 'text/plain') {
         const text = await file.text();
         onUploadSuccess(text, file.name);
       } else {
-        toast({
-          variant: 'destructive',
-          title: 'Unsupported File Type',
-          description: `For this demo, only .txt files are supported for direct reading. Using sample document instead.`,
-        });
-        // Fallback to sample for other types in this demo
-        onUploadSuccess(SAMPLE_LEGAL_DOCUMENT, file.name);
+        // For this demo, we will simulate reading other file types.
+        const simulatedText = `This is a simulated content for the file: ${file.name}. In a real application, you would use a library to parse this file type.`;
+        onUploadSuccess(simulatedText, file.name);
       }
     } catch (error) {
       console.error('Error parsing file:', error);
@@ -72,7 +73,7 @@ export function DocumentUpload({ onUploadSuccess }: DocumentUploadProps) {
         <CardHeader>
           <CardTitle className="text-2xl">Upload Your Document</CardTitle>
           <CardDescription>
-            Upload a TXT file to get started, or use our sample document.
+            Upload a file to get started. Audio and video files are not supported.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -90,30 +91,17 @@ export function DocumentUpload({ onUploadSuccess }: DocumentUploadProps) {
               Click to upload a file
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              TXT files supported for this demo
+              Any file type except audio/video
             </p>
             <input
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".txt"
+              accept="*/*"
               disabled={isParsing}
             />
           </div>
-          <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">OR</span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-          <Button
-            variant="outline"
-            onClick={handleUseSample}
-            disabled={isParsing}
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            Analyze Sample Document
-          </Button>
         </CardContent>
       </Card>
     </div>

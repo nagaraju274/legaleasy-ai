@@ -1,6 +1,21 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import {
+  GoogleAuthProvider,
+  User,
+  getAuth,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
+import { app } from '@/lib/firebase';
 
 export interface AuthUser {
   name: string;
@@ -20,33 +35,51 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const auth = getAuth(app);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('legalease-user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { displayName, email, photoURL } = user;
+        if (displayName && email && photoURL) {
+          setUser({
+            name: displayName,
+            email: email,
+            photoURL: photoURL,
+          });
+        }
+      } else {
+        setUser(null);
       }
-    } catch (error) {
-      console.error('Failed to parse user from localStorage', error);
-      localStorage.removeItem('legalease-user');
-    }
-    setLoading(false);
-  }, []);
+      setLoading(false);
+    });
 
-  const login = () => {
-    const dummyUser: AuthUser = {
-      name: 'Alex Doe',
-      email: 'alex.doe@example.com',
-      photoURL: 'https://picsum.photos/seed/user/100/100',
-    };
-    localStorage.setItem('legalease-user', JSON.stringify(dummyUser));
-    setUser(dummyUser);
+    return () => unsubscribe();
+  }, [auth]);
+
+  const login = async () => {
+    setLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Login failed:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('legalease-user');
-    setUser(null);
+  const logout = async () => {
+    setLoading(true);
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

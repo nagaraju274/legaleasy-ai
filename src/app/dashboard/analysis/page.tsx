@@ -1,52 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { RiskSnapshot } from '@/components/dashboard/risk-snapshot';
+import { ActiveLease } from '@/components/dashboard/active-lease';
+import { LiveDocuments } from '@/components/dashboard/live-documents';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { DocumentView } from '@/components/dashboard/document-view';
-import { FileText, Loader2 } from 'lucide-react';
 
 export default function AnalysisPage() {
   const router = useRouter();
-  const [documentText, setDocumentText] = useState<string | null>(null);
-  const [documentName, setDocumentName] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const text = sessionStorage.getItem('documentText');
-    const name = sessionStorage.getItem('documentName');
-
-    if (text && name) {
-      setDocumentText(text);
-      setDocumentName(name);
-    } else {
-      // If no document is in storage, redirect to upload page
-      router.replace('/dashboard');
-    }
-    setIsLoading(false);
-  }, [router]);
-
   const handleReset = () => {
     sessionStorage.removeItem('documentText');
     sessionStorage.removeItem('documentName');
     router.push('/dashboard');
   };
-
-  if (isLoading || !documentText) {
-    return (
-      <div className="flex h-full min-h-[calc(100vh-12rem)] w-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading Analysis...</p>
+  return (
+    <div className="space-y-6">
+       <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="icon" onClick={handleReset} aria-label="Go back to upload">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="flex items-center gap-2 text-2xl font-bold">
+              Analysis
+            </h1>
+            <p className="text-muted-foreground">Dashboard overview</p>
+          </div>
         </div>
       </div>
-    );
-  }
-
-  return (
-    <DocumentView
-      documentText={documentText}
-      documentName={documentName}
-      onReset={handleReset}
-    />
+      <RiskSnapshot />
+      <ActiveLease />
+      <LiveDocuments />
+    </div>
   );
 }

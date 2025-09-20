@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import {
   SidebarProvider,
@@ -21,6 +21,7 @@ export default function DashboardLayout({
 }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -28,9 +29,28 @@ export default function DashboardLayout({
     }
   }, [user, loading, router]);
 
+  // Redirect from /dashboard to /dashboard/contracts
+  useEffect(() => {
+    if (pathname === '/dashboard') {
+      router.replace('/dashboard/contracts');
+    }
+  }, [pathname, router]);
+
   if (loading || !user) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <p className="text-muted-foreground">Loading Your Dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Do not render layout for /dashboard, wait for redirect
+  if (pathname === '/dashboard') {
+    return (
+       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p className="text-muted-foreground">Loading Your Dashboard...</p>

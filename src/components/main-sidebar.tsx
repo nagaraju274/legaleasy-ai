@@ -7,9 +7,15 @@ import {
   SidebarMenuButton,
   SidebarFooter,
   useSidebar,
-  SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { FileText, LayoutDashboard, ChevronsLeft } from 'lucide-react';
+import {
+  FileText,
+  ChevronsLeft,
+  Folder,
+  UploadCloud,
+  FileCode,
+  Settings,
+} from 'lucide-react';
 import { UserNav } from './user-nav';
 import { useAuth } from '@/hooks/use-auth';
 import { usePathname } from 'next/navigation';
@@ -44,19 +50,47 @@ export function MainSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              href="/dashboard"
-              isActive={pathname.startsWith('/dashboard')}
-              tooltip="Dashboard"
+              href="/dashboard/contracts"
+              isActive={pathname.startsWith('/dashboard/contracts')}
+              tooltip="My Contracts"
             >
-              <LayoutDashboard />
-              <span className="truncate">Dashboard</span>
+              <Folder />
+              <span className="truncate">My Contracts</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              href="/dashboard/upload"
+              isActive={pathname.startsWith('/dashboard/upload')}
+              tooltip="Upload"
+            >
+              <UploadCloud />
+              <span className="truncate">Upload</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              href="/dashboard/templates"
+              isActive={pathname.startsWith('/dashboard/templates')}
+              tooltip="Templates"
+            >
+              <FileCode />
+              <span className="truncate">Templates</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              href="/dashboard/settings"
+              isActive={pathname.startsWith('/dashboard/settings')}
+              tooltip="Settings"
+            >
+              <Settings />
+              <span className="truncate">Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-        {user && <UserNav user={user} />}
-      </SidebarFooter>
+      <SidebarFooter>{user && <UserNav user={user} />}</SidebarFooter>
     </>
   );
 }

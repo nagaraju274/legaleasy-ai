@@ -11,6 +11,7 @@ import {
 import { MainSidebar } from '@/components/main-sidebar';
 import { Header } from '@/components/header';
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function DashboardLayout({
   children,
@@ -44,8 +45,31 @@ export default function DashboardLayout({
           <MainSidebar />
         </Sidebar>
         <SidebarInset>
-          <Header />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+            <footer className="border-t">
+              <div className="container flex h-16 items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  © {new Date().getFullYear()} LegalEase AI. All rights reserved.
+                </p>
+                <div className="flex items-center gap-4">
+                  <Link
+                    href="/privacy"
+                    className="text-sm text-muted-foreground hover:text-primary"
+                  >
+                    Privacy Policy
+                  </Link>
+                  <Link
+                    href="/terms"
+                    className="text-sm text-muted-foreground hover:text-primary"
+                  >
+                    Terms of Service
+                  </Link>
+                </div>
+              </div>
+            </footer>
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>

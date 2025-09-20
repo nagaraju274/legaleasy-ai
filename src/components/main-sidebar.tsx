@@ -20,6 +20,7 @@ import { UserNav } from './user-nav';
 import { useAuth } from '@/hooks/use-auth';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
+import Link from 'next/link';
 
 export function MainSidebar() {
   const { user } = useAuth();
@@ -50,12 +51,14 @@ export function MainSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              href="/dashboard/contracts"
+              asChild
               isActive={pathname.startsWith('/dashboard/contracts')}
               tooltip="My Contracts"
             >
-              <Folder />
-              <span className="truncate">My Contracts</span>
+              <Link href="/dashboard/contracts">
+                <Folder />
+                <span className="truncate">My Contracts</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

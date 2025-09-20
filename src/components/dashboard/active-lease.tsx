@@ -199,16 +199,21 @@ export function ActiveLease() {
                 </ul>
               </div>
 
-              {highlights?.renewalNoticeDays && highlights.renewalNoticeDays > 0 && (
-                <Card className="p-4 bg-muted max-w-xs">
-                  <CardContent className="p-0">
-                    <p className="font-bold text-lg">Renewal Notice</p>
+              <Card className="p-4 bg-muted max-w-xs">
+                <CardContent className="p-0">
+                  <p className="font-bold text-lg">Renewal Notice</p>
+                  {highlights?.renewalNoticeDays &&
+                  highlights.renewalNoticeDays > 0 ? (
                     <p className="text-muted-foreground">
                       Due in {highlights.renewalNoticeDays} days
                     </p>
-                  </CardContent>
-                </Card>
-              )}
+                  ) : (
+                    <p className="text-muted-foreground">
+                      No specific notice period found in the document.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
             </div>
 
             <div className="flex items-center justify-center min-h-[300px]">

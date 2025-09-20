@@ -30,12 +30,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.resolve.alias['pdf-parse'] = false;
-    }
-    return config;
-  },
 };
 
 export default nextConfig;

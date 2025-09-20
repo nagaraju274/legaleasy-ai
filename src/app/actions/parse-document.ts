@@ -1,7 +1,6 @@
 'use server';
 
 import mammoth from 'mammoth';
-import pdf from 'pdf-parse';
 
 export async function parseDocument(
   formData: FormData
@@ -16,8 +15,10 @@ export async function parseDocument(
     const buffer = Buffer.from(await file.arrayBuffer());
 
     if (file.type === 'application/pdf') {
-      const data = await pdf(buffer);
-      return { text: data.text };
+       return {
+        text: '',
+        error: `PDF parsing is temporarily disabled. Please upload a DOCX or plain text file.`,
+      };
     } else if (
       file.type ===
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
@@ -30,7 +31,7 @@ export async function parseDocument(
     } else {
       return {
         text: '',
-        error: `Unsupported file type: ${file.type}. Please upload a PDF, DOCX, or plain text file.`,
+        error: `Unsupported file type: ${file.type}. Please upload a DOCX or plain text file.`,
       };
     }
   } catch (error) {

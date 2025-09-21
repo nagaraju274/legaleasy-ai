@@ -5,8 +5,7 @@ import {
   User,
   getAuth,
   onAuthStateChanged,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth';
 import React, {
@@ -60,43 +59,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, [auth]);
 
-  // Handle redirect result on component mount
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result) {
-          // User has successfully signed in.
-          toast({
-            title: 'Signed In',
-            description: `Welcome back, ${result.user.displayName}!`,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('Redirect sign-in failed:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Sign In Failed',
-          description: 'Could not sign in with Google. Please try again.',
-        });
-      })
-      .finally(() => setLoading(false));
-  }, [auth, toast]);
-
   const login = async () => {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const { displayName, email, photoURL } = result.user;
+       if (displayName && email && photoURL) {
+          setUser({
+            name: displayName,
+            email: email,
+            photoURL: photoURL,
+          });
+           toast({
+            title: 'Signed In',
+            description: `Welcome back, ${displayName}!`,
+          });
+        }
     } catch (error) {
       console.error('Login failed:', error);
       setUser(null);
-      setLoading(false);
       toast({
         variant: 'destructive',
         title: 'Sign In Failed',
-        description: 'Could not start the sign-in process. Please try again.',
+        description: 'Could not sign in with Google. Please try again.',
       });
+    } finally {
+      setLoading(false);
     }
   };
 

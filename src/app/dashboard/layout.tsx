@@ -1,8 +1,7 @@
 'use client';
 
-import { useAuth } from '@/hooks/use-auth';
-import { useRouter, usePathname } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   SidebarProvider,
   Sidebar,
@@ -10,8 +9,6 @@ import {
 } from '@/components/ui/sidebar';
 import { MainSidebar } from '@/components/main-sidebar';
 import { Header } from '@/components/header';
-import { Loader2 } from 'lucide-react';
-import Link from 'next/link';
 import { Footer } from '@/components/footer';
 
 export default function DashboardLayout({
@@ -19,46 +16,21 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/login');
-    }
-  }, [user, loading, router]);
-
-  // Redirect from /dashboard to /dashboard/contracts
-  useEffect(() => {
+  // Redirect from /dashboard to /dashboard/upload
+  React.useEffect(() => {
     if (pathname === '/dashboard') {
-      router.replace('/dashboard/contracts');
+      router.replace('/dashboard/upload');
     }
   }, [pathname, router]);
 
-  if (loading || !user) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading Your Dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
   // Do not render layout for /dashboard, wait for redirect
   if (pathname === '/dashboard') {
-    return (
-       <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading Your Dashboard...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
-
+  
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">

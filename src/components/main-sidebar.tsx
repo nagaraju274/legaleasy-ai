@@ -16,14 +16,11 @@ import {
   FileCode,
   Settings,
 } from 'lucide-react';
-import { UserNav } from './user-nav';
-import { useAuth } from '@/hooks/use-auth';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
 import Link from 'next/link';
 
 export function MainSidebar() {
-  const { user } = useAuth();
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
@@ -95,7 +92,11 @@ export function MainSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>{user && <UserNav user={user} />}</SidebarFooter>
+      <SidebarFooter>
+        <div className="p-2 text-center text-xs text-muted-foreground">
+          &copy; {new Date().getFullYear()} LegalEase AI
+        </div>
+      </SidebarFooter>
     </>
   );
 }

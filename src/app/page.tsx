@@ -31,8 +31,8 @@ export default function Home() {
           <Logo />
           <div className="flex flex-1 items-center justify-end space-x-4">
             <nav className="flex items-center space-x-2">
-              <Button onClick={() => router.push('/login')}>
-                Sign In with Google
+              <Button onClick={() => router.push('/dashboard/upload')}>
+                Get Started
               </Button>
             </nav>
           </div>
@@ -52,7 +52,7 @@ export default function Home() {
               required.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Button size="lg" onClick={() => router.push('/login')}>
+              <Button size="lg" onClick={() => router.push('/dashboard/upload')}>
                 Get Started Free
               </Button>
               <Button size="lg" variant="outline">
